@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { jwt } from 'jsonwebtoken'; // JWT error handling
+import jwt from 'jsonwebtoken'; // JWT error handling
 import bycrypt from 'bcrypt'; //password hashing library
 
 
@@ -54,7 +54,8 @@ const userSchema = new Schema(
 
 userSchema.pre("save", async function (next) {
     if(!this.isModified("passwrod")) return next();
-    this.password=bycrypt.hash(this.password,10)
+    // hash the password before saving
+    this.password = await bycrypt.hash(this.password,10)
     next()
 })
 
